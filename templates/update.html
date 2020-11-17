@@ -16,8 +16,7 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-item nav-link " href="add.html">Add employee</a>
-        <a class="nav-item nav-link active" href="#">Update Employee Data</a>
-        <a class="nav-item nav-link" href="delete.html">Delete Employee Data</a>
+        <a class="nav-item nav-link active" href="#">Update/Delete Employee Data</a>
         <a class="nav-item nav-link " href="search.html">Search employee</a>
       </div>
     </div>
@@ -25,22 +24,22 @@
 
   <div class="form-box">
     <h2>Update Data</h2>
-    <form method='POST', action="/add">
+    <form method='POST', action="">
       <div class="user-box">
-        <input type="number" name="empid" required="" placeholder="ID" disabled>
+        <input type="number" name="empid" required="" placeholder="ID" value='2222' disabled>
       </div>
       <div class="user-box">
-        <input type="text" name="name" required="" placeholder="Name" >
+        <input type="text" name="name" required="" placeholder="Name" value='sample name'>
       </div>
       <div class="user-box">
-        <textarea placeholder="Address" rows="1" name = "address"></textarea>
+        <textarea placeholder="Address" rows="1" name = "address" > Nashik </textarea>
       </div>
       <div class="user-box">
-        <input placeholder="DOB" type="text" onfocus="(this.type='date')" id="date" name = "dob" />
+        <input placeholder="DOB" type="text" onfocus="(this.type='date')" id="date" name = "dob" value='22/12/98'>
 
       </div>
       <div class="user-box">
-        <input type="number" name="mobile" required="" placeholder="Mobile No." >
+        <input type="number" name="mobile" required="" placeholder="Mobile No." value='8888000000' >
       </div>
       <input type=submit class='button' value='update'>
     </form>
