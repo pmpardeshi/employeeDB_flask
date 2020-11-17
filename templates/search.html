@@ -34,21 +34,20 @@ function disableOptions(x,y) {
   <div class="form-box">
     <h2>Search Employee</h2>
     <form method='POST' action='#'>
-      <fieldset required="true">
         <div class="user-box">
-          <input type="number" name="" placeholder="ID" id="id1" onfocus='disableOptions(document.getElementById("initial"),document.getElementById("age"))'>
+          <input type="number" name="" placeholder="ID" id="id1" onfocus='disableOptions(document.getElementById("initial"),document.getElementById("age"))' required>
         </div>
         <label> OR </label>
         <div class="user-box">
-          <input type="text" name=""  placeholder="Initials" id='initial' onfocus='disableOptions(document.getElementById("id1"),document.getElementById("age"))'>
+          <input type="text" name=""  placeholder="Initials" id='initial' onfocus='disableOptions(document.getElementById("id1"),document.getElementById("age"))' required>
         </div>
         <label> OR </label>
         <div class="user-box">
-          <input type="number" name=""  placeholder="Age" id='age' onfocus='disableOptions(document.getElementById("initial"),document.getElementById("id1"))'>
+          <input type="number" name=""  placeholder="Age" id='age' onfocus='disableOptions(document.getElementById("initial"),document.getElementById("id1"))' required>
         </div>
       
       <input type=submit class='button' value='Search'>
-      </fieldset>
+   
     </form>
   </div>
    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
