@@ -32,17 +32,17 @@ function disableOptions(x,y) {
 
   <div class="form-box">
     <h2>Search Employee</h2>
-    <form method='POST' action='#'>
+    <form method='POST' action='/search'>
         <div class="user-box">
-          <input type="number" name="" placeholder="ID" id="id1" onfocus='disableOptions(document.getElementById("initial"),document.getElementById("age"))' required>
+          <input type="number" name="id" placeholder="ID" id="id1" onfocus='disableOptions(document.getElementById("initial"),document.getElementById("age"))' required>
         </div>
         <label> OR </label>
         <div class="user-box">
-          <input type="text" name=""  placeholder="Initials" id='initial' onfocus='disableOptions(document.getElementById("id1"),document.getElementById("age"))' required>
+          <input type="text" name="initials"  placeholder="Initials" id='initial' onfocus='disableOptions(document.getElementById("id1"),document.getElementById("age"))' required>
         </div>
         <label> OR </label>
         <div class="user-box">
-          <input type="number" name=""  placeholder="Age" id='age' onfocus='disableOptions(document.getElementById("initial"),document.getElementById("id1"))' required>
+          <input type="number" name="age"  placeholder="Age" id='age' onfocus='disableOptions(document.getElementById("initial"),document.getElementById("id1"))' required>
         </div>
       
       <input type=submit class='button' value='Search'>

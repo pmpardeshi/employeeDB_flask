@@ -9,7 +9,7 @@ import random
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root123'
+app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'empdb'
 mysql = MySQL(app)
 app.secret_key='daffjsdfyi76487pa'
@@ -111,20 +111,28 @@ def update():
 @app.route("/search", methods=['GET', 'POST'])
 def search():
     if request.method=='POST':
+        cur=mysql.connection.cursor()
 
-        # cur=mysql.connection.cursor()
-
-        # if 'emp_id' in request.form:
-        #     r = db.engine.excute('select * from Employee where empId = emp_id')  #query for emp_id
-        # elif 'emp_initials' in request.form:
-        #     r = db.engine.excute('select * from Employee where empName like \'[emp_initials]%\'')  #query for first_letter
-        # elif 'emp_age' in request.form:
-        #     r  = db.engine.excute('select * from Employee where SUBSTRING(empDOB,6,4) <= YEAR(CURDATE())-emp_age') #query for emp_age
-
-        # if not r:
-        #     return render_template('search.html',message = 'Incorrect Employee details')
-        Details=((1 , 'aa'  ,'a' ,'2020-11-17','1'),(11,'pr','nsk','2012-12-12','8888'),(12,'kr','nsk','2010-12-12','8888'))
-        return render_template('detailsTable.html',Details=Details)
+        if 'id' in request.form:
+            idvar=int(request.form['id'])
+            cur.execute("select * from employee where empid=%s",(idvar,))  #query for emp_id
+            Details=cur.fetchall()
+            return render_template('detailsTable.html', Details=Details)
+        elif 'initials' in request.form:
+            temp=request.form['initials']
+            inivar=temp + "%"
+            cur.execute("select * from employee where empname like %s",(inivar,))    #query for first_letter
+            Details = cur.fetchall()
+            return render_template('detailsTable.html', Details=Details)
+        elif 'age' in request.form:
+            agevar=int(request.form['age'])
+            cur.execute("select * from Employee where SUBSTRING(empdob,1,4) = YEAR(CURDATE())-%s",(agevar,))   #query for emp_age
+            Details = cur.fetchall()
+            return render_template('detailsTable.html', Details=Details)
+        if not cur.fetchall():
+            return render_template('search.html',message = 'Incorrect Employee details')
+        # Details=((1 , 'aa'  ,'a' ,'2020-11-17','1'),(11,'pr','nsk','2012-12-12','8888'),(12,'kr','nsk','2010-12-12','8888'))
+        # return render_template('detailsTable.html',Details=Details)
     return render_template('search.html')
 
 
