@@ -4,7 +4,7 @@ from flask_mysqldb import MySQL
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'root123'
 app.config['MYSQL_DB'] = 'empdb'    #Statements for establishing connection to mysql database
 mysql = MySQL(app)
 app.secret_key='daffjsdfyi76487pa'  #Used for flashing messages
