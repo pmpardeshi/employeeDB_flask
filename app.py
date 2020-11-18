@@ -52,35 +52,54 @@ def add():
         return render_template('add.html',message=message)
     return render_template('add.html')
 
-@app.route("/redirect", methods=['GET', 'POST'])
-def redirect():
+@app.route("/redirectpage", methods=['GET', 'POST'])
+def redirectpage():
     if request.method == 'POST':
-
         if request.form['sbutton'] == 'Update':
             queryid = request.form['queryid']
             cur = mysql.connection.cursor()
             cur.execute("SELECT * FROM employee WHERE empid=%s", (int(queryid),))
             data = cur.fetchall()
+            session['queryvar']=data[0][0]
             return render_template('update.html', value=data)
         else:
             queryid = request.form['queryid']
             cur = mysql.connection.cursor()
             cur.execute("SELECT * FROM employee WHERE empid=%s", (int(queryid),))
             data = cur.fetchall()
+            session['queryvar'] = int(data[0][0])
             if(data):
                 return render_template('delete.html', value=data)
             else:
                 flash('No record found with entered ID')
-    return render_template('redirect.html')
+    return render_template('redirectpage.html')
 
 @app.route("/delete", methods=['GET', 'POST'])
 def delete():
     if request.method == 'POST':
-        deletequery = request.form['deletequery']
         cur = mysql.connection.cursor()
-        cur.execute("DELETE FROM employee WHERE empid=%s", (int(deletequery),))
+        delthis = session.get('queryvar')
+        cur.execute("DELETE FROM employee WHERE empid=%s", (delthis,))
+        mysql.connection.commit()
+        session.pop('queryval', None)
         return render_template('add.html')
     return render_template('delete.html')
+
+@app.route("/update", methods=['GET', 'POST'])
+def update():
+    if request.method == 'POST':
+        cur = mysql.connection.cursor()
+        updthis = session.get('queryvar')
+        newname= request.form['name']
+        newaddress = request.form['address']
+        newmobile = request.form['mobile']
+        sql_update_query = "UPDATE employee SET empname=%s empaddress=%s empmobile=%s WHERE empid=%s"
+        input_data=(newname, newaddress, newmobile, updthis)
+        cur.execute(sql_update_query, input_data)
+        mysql.connection.commit()
+        session.pop('queryval', None)
+        return render_template('add.html')
+    return render_template('update.html')
 
 # @app.route('xyz', methods=['GET','POST'])
 # def update():
