@@ -9,7 +9,7 @@ import random
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'root123'
 app.config['MYSQL_DB'] = 'empdb'
 mysql = MySQL(app)
 app.secret_key='daffjsdfyi76487pa'
@@ -49,8 +49,8 @@ def add():
         mysql.connection.commit()
         cur.close()
         # message = "Employee added successfully!"
-        flash('Employee added successfully!',category='success')
-        return render_template('add.html')
+        flash(f'{new_empName} added successfully!',category='success')
+        return redirect('/alldata')
     return render_template('add.html')
 
 @app.route("/redirectpage", methods=['GET', 'POST'])
@@ -88,7 +88,7 @@ def delete():
         mysql.connection.commit()
         session.pop('queryval', None)
         flash(f'Deleted record with ID: {delthis}',category='danger')
-        return render_template('add.html')
+        return redirect('/alldata')
     return render_template('delete.html')
 
 @app.route("/update", methods=['GET', 'POST'])
@@ -105,7 +105,7 @@ def update():
         mysql.connection.commit()
         session.pop('queryval', None)        
         flash(f'Updated record with ID: {updthis}',category='success')
-        return render_template('add.html')
+        return redirect('/alldata')
     return render_template('update.html')
 
 @app.route("/search", methods=['GET', 'POST'])
@@ -116,23 +116,23 @@ def search():
         if 'id' in request.form:
             idvar=int(request.form['id'])
             cur.execute("select * from employee where empid=%s",(idvar,))  #query for emp_id
-            Details=cur.fetchall()
-            return render_template('detailsTable.html', Details=Details)
+            
         elif 'initials' in request.form:
             temp=request.form['initials']
             inivar=temp + "%"
             cur.execute("select * from employee where empname like %s",(inivar,))    #query for first_letter
-            Details = cur.fetchall()
-            return render_template('detailsTable.html', Details=Details)
+           
         elif 'age' in request.form:
             agevar=int(request.form['age'])
             cur.execute("select * from Employee where SUBSTRING(empdob,1,4) = YEAR(CURDATE())-%s",(agevar,))   #query for emp_age
-            Details = cur.fetchall()
+            
+        
+        Details=cur.fetchall()
+
+        if Details:
             return render_template('detailsTable.html', Details=Details)
-        if not cur.fetchall():
-            return render_template('search.html',message = 'Incorrect Employee details')
-        # Details=((1 , 'aa'  ,'a' ,'2020-11-17','1'),(11,'pr','nsk','2012-12-12','8888'),(12,'kr','nsk','2010-12-12','8888'))
-        # return render_template('detailsTable.html',Details=Details)
+        else:
+            flash(f'No record found of given data',category='danger')
     return render_template('search.html')
 
 
@@ -147,6 +147,14 @@ def details(id1):
     return render_template('details.html', value=data)
       
 
+
+@app.route("/alldata", methods=['GET', 'POST'])
+def alldata():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM employee")
+    Details = cur.fetchall()
+    return render_template('alldata.html', Details=Details)
+        
 
 
 

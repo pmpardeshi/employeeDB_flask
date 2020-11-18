@@ -22,7 +22,8 @@ html body {
   border-radius: 10px;
 }
 
-.form-box h2 {
+
+.form-box h2 , .table-box h2 {
   margin: 0 0 30px;
   padding: 0;
   text-align: center;
@@ -61,7 +62,20 @@ html body {
   
 }
 
-.form-box table{
+
+.table-box {
+  position: relative; 
+  width: 600px;
+  padding: 20px;
+  background: #fefefe;
+  margin:auto;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+
+
+.table-box table, .form-box table{
   width:100%;
   text-align: center;
 }
