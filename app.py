@@ -9,7 +9,7 @@ import random
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'root123'
 app.config['MYSQL_DB'] = 'empdb'
 mysql = MySQL(app)
 app.secret_key='daffjsdfyi76487pa'
@@ -48,8 +48,9 @@ def add():
         #new_record = Employee(empId=new_empId,empName=new_empName,empAddress=new_empAddress,empDOB=new_empDOB,empMobile=new_empMobile)
         mysql.connection.commit()
         cur.close()
-        message = "Employee added successfully!"
-        return render_template('add.html',message=message)
+        # message = "Employee added successfully!"
+        flash('Employee added successfully!',category='success')
+        return render_template('add.html')
     return render_template('add.html')
 
 @app.route("/redirectpage", methods=['GET', 'POST'])
@@ -60,18 +61,22 @@ def redirectpage():
             cur = mysql.connection.cursor()
             cur.execute("SELECT * FROM employee WHERE empid=%s", (int(queryid),))
             data = cur.fetchall()
-            session['queryvar']=data[0][0]
-            return render_template('update.html', value=data)
+            if(data):
+                session['queryvar']=data[0][0]
+                return render_template('update.html', value=data)
+            else:
+                flash('No record found with entered ID',category='danger')
         else:
             queryid = request.form['queryid']
             cur = mysql.connection.cursor()
             cur.execute("SELECT * FROM employee WHERE empid=%s", (int(queryid),))
             data = cur.fetchall()
-            session['queryvar'] = int(data[0][0])
+            
             if(data):
+                session['queryvar'] = int(data[0][0])
                 return render_template('delete.html', value=data)
             else:
-                flash('No record found with entered ID')
+                flash('No record found with entered ID',category='danger')
     return render_template('redirectpage.html')
 
 @app.route("/delete", methods=['GET', 'POST'])
@@ -82,6 +87,7 @@ def delete():
         cur.execute("DELETE FROM employee WHERE empid=%s", (delthis,))
         mysql.connection.commit()
         session.pop('queryval', None)
+        flash(f'Deleted record with ID: {delthis}',category='danger')
         return render_template('add.html')
     return render_template('delete.html')
 
@@ -93,13 +99,50 @@ def update():
         newname= request.form['name']
         newaddress = request.form['address']
         newmobile = request.form['mobile']
-        sql_update_query = "UPDATE employee SET empname=%s empaddress=%s empmobile=%s WHERE empid=%s"
+        sql_update_query = "UPDATE employee SET empname=%s, empaddress=%s ,empmobile=%s WHERE empid=%s"
         input_data=(newname, newaddress, newmobile, updthis)
         cur.execute(sql_update_query, input_data)
         mysql.connection.commit()
-        session.pop('queryval', None)
+        session.pop('queryval', None)        
+        flash(f'Updated record with ID: {updthis}',category='success')
         return render_template('add.html')
     return render_template('update.html')
+
+@app.route("/search", methods=['GET', 'POST'])
+def search():
+    if request.method=='POST':
+
+        # cur=mysql.connection.cursor()
+
+        # if 'emp_id' in request.form:
+        #     r = db.engine.excute('select * from Employee where empId = emp_id')  #query for emp_id
+        # elif 'emp_initials' in request.form:
+        #     r = db.engine.excute('select * from Employee where empName like \'[emp_initials]%\'')  #query for first_letter
+        # elif 'emp_age' in request.form:
+        #     r  = db.engine.excute('select * from Employee where SUBSTRING(empDOB,6,4) <= YEAR(CURDATE())-emp_age') #query for emp_age
+
+        # if not r:
+        #     return render_template('search.html',message = 'Incorrect Employee details')
+        Details=((1 , 'aa'  ,'a' ,'2020-11-17','1'),(11,'pr','nsk','2012-12-12','8888'),(12,'kr','nsk','2010-12-12','8888'))
+        return render_template('detailsTable.html',Details=Details)
+    return render_template('search.html')
+
+
+
+@app.route("/details/<int:id1>", methods=['GET', 'POST'])
+def details(id1):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM employee WHERE empid=%s", (int(id1),))
+    data = cur.fetchall()
+    print(data)
+    session['queryvar']=data[0][0]
+    return render_template('details.html', value=data)
+      
+
+
+
+
+
 
 # @app.route('xyz', methods=['GET','POST'])
 # def update():

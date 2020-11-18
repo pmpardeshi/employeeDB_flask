@@ -45,11 +45,6 @@ html body {
   background: transparent;
 }
 
-
-
-
-
-
 .form-box form .button {
   position: relative;
   padding: 10px 20px;
@@ -65,4 +60,10 @@ html body {
   cursor: pointer;
   
 }
+
+.form-box table{
+  width:100%;
+  text-align: center;
+}
+
 
