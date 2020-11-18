@@ -1,23 +1,27 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, abort, session, g
 from markupsafe import escape
 from flask_sqlalchemy import SQLAlchemy
+from flask_mysqldb import MySQL
 from datetime import datetime
 import time
 import random
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///employee.db'
-db = SQLAlchemy(app)
-
-class Employee(db.Model):
-    empId = db.Column(db.Integer, primary_key=True, nullable=False)
-    empName = db.Column(db.String(20), nullable=False, default='N/A')
-    empAddress = db.Column(db.String(100), nullable=False, default='N/A')
-    empDOB = db.Column(db.String(10), nullable=False,default='N/A')
-    empMobile = db.Column(db.Integer, nullable=False,default='N/A')
-
-    def __repr__(self):
-        return 'Employee ' + str(self.empId)
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_DB'] = 'empdb'
+mysql = MySQL(app)
+app.secret_key='daffjsdfyi76487pa'
+# class Employee(db.Model):
+#     empId = db.Column(db.Integer, primary_key=True, nullable=False)
+#     empName = db.Column(db.String(20), nullable=False, default='N/A')
+#     empAddress = db.Column(db.String(100), nullable=False, default='N/A')
+#     empDOB = db.Column(db.String(10), nullable=False,default='N/A')
+#     empMobile = db.Column(db.Integer, nullable=False,default='N/A')
+#
+#     def __repr__(self):
+#         return 'Employee ' + str(self.empId)
 
 """  def __init__(self,empId,empName,empAddress,empDOB,empMobile):
         self.empId=empId
@@ -39,12 +43,44 @@ def add():
         new_empAddress = request.form['address']
         new_empDOB = request.form['dob']
         new_empMobile = request.form['mobile']
-        new_record = Employee(empId=new_empId,empName=new_empName,empAddress=new_empAddress,empDOB=new_empDOB,empMobile=new_empMobile)
-        db.session.add(new_record)
-        db.session.commit()
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO employee(empid, empname, empaddress, empdob, empmobile) VALUES (%s, %s, %s, %s, %s)", (int(new_empId), new_empName, new_empAddress, new_empDOB, new_empMobile))
+        #new_record = Employee(empId=new_empId,empName=new_empName,empAddress=new_empAddress,empDOB=new_empDOB,empMobile=new_empMobile)
+        mysql.connection.commit()
+        cur.close()
         message = "Employee added successfully!"
         return render_template('add.html',message=message)
     return render_template('add.html')
+
+@app.route("/redirect", methods=['GET', 'POST'])
+def redirect():
+    if request.method == 'POST':
+
+        if request.form['sbutton'] == 'Update':
+            queryid = request.form['queryid']
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM employee WHERE empid=%s", (int(queryid),))
+            data = cur.fetchall()
+            return render_template('update.html', value=data)
+        else:
+            queryid = request.form['queryid']
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM employee WHERE empid=%s", (int(queryid),))
+            data = cur.fetchall()
+            if(data):
+                return render_template('delete.html', value=data)
+            else:
+                flash('No record found with entered ID')
+    return render_template('redirect.html')
+
+@app.route("/delete", methods=['GET', 'POST'])
+def delete():
+    if request.method == 'POST':
+        deletequery = request.form['deletequery']
+        cur = mysql.connection.cursor()
+        cur.execute("DELETE FROM employee WHERE empid=%s", (int(deletequery),))
+        return render_template('add.html')
+    return render_template('delete.html')
 
 # @app.route('xyz', methods=['GET','POST'])
 # def update():

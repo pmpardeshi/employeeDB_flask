@@ -18,22 +18,22 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-item nav-link " href="add.html">Add employee</a>
-        <a class="nav-item nav-link active" href="redirect.html">Update/Delete Employee Data</a>
-        <a class="nav-item nav-link " href="search.html">Search employee</a>
+        <a class="nav-item nav-link active" href="/add">Add employee</a>
+        <a class="nav-item nav-link" href="/redirect">Update/Delete Employee Data</a>
+        <a class="nav-item nav-link " href="/search">Search employee</a>
       </div>
     </div>
   </nav>
 
   <div class="form-box">
     <h2>Update/Delete</h2>
-    <form method='POST' action='#'>
+    <form method='POST' action="/redirect">
         <div class="user-box">
-          <input type="number" name="" placeholder="ID" id="id1" required>
+          <input type="number" name="queryid" placeholder="ID" id="id1" required>
         </div>
               
-      <input type=button class='button' value='Update' onCLick=#>
-      <input type=button class='button' value='Delete' onClick=#>
+      <input type="submit" name ="sbutton" class='button' value='Update' >
+      <input type="submit" name ="sbutton" class='button' value='Delete' >
    
     </form>
   </div>

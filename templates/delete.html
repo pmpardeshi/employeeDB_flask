@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="../static/css/main.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"/>
   <title>Add Employee</title>
 </head>
@@ -15,31 +15,32 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-item nav-link " href="add.html">Add employee</a>
-        <a class="nav-item nav-link" href="#">Update/Delete Employee Data</a>
-        <a class="nav-item nav-link " href="search.html">Search employee</a>
+        <a class="nav-item nav-link active" href="/add">Add employee</a>
+        <a class="nav-item nav-link" href="/redirect">Update/Delete Employee Data</a>
+        <a class="nav-item nav-link " href="/search">Search employee</a>
       </div>
     </div>
   </nav>
 
   <div class="form-box">
     <h2>Delete Employee</h2>
-    <form method='POST' action='#'>
+    <form method='POST' action='/delete'>
       <div class="user-box">
-        <input type="number" name="" required="" placeholder="ID">
+        <input type="number" name="" required="" placeholder="ID" value="{{ value[0][0] }}" readonly="true">
+        <input type="hidden" id="dq" name="deletequery" value="{{ value[0][0] }}">
       </div>
       <div class="user-box">
-        <input type="text" name="" required="" placeholder="Name">
+        <input type="text" name="" required="" placeholder="Name" value="{{ value[0][1] }}" disabled>
       </div>
       <div class="user-box">
-        <textarea placeholder="Address" rows="1"></textarea>
+        <textarea placeholder="Address" rows="1" disabled>{{ value[0][2] }}</textarea>
       </div>
       <div class="user-box">
-        <input placeholder="DOB" type="text" onfocus="(this.type='date')" id="date" />
+        <input placeholder="DOB" type="text" onfocus="(this.type='date')" id="date" value="{{ value[0][3] }}" disabled />
 
       </div>
       <div class="user-box">
-        <input type="number" name="" required="" placeholder="Mobile No.">
+        <input type="number" name="" required="" placeholder="Mobile No." value="{{ value[0][4] }}" disabled>
       </div>
       <input type=submit class='button' value='delete'>
     </form>

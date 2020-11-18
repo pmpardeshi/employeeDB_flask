@@ -15,31 +15,31 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-item nav-link " href="add.html">Add employee</a>
-        <a class="nav-item nav-link active" href="#">Update/Delete Employee Data</a>
-        <a class="nav-item nav-link " href="search.html">Search employee</a>
+        <a class="nav-item nav-link active" href="/add">Add employee</a>
+        <a class="nav-item nav-link" href="/redirect">Update/Delete Employee Data</a>
+        <a class="nav-item nav-link " href="/search">Search employee</a>
       </div>
     </div>
   </nav>
 
   <div class="form-box">
     <h2>Update Data</h2>
-    <form method='POST', action="">
+    <form method='POST', action="/update">
       <div class="user-box">
-        <input type="number" name="empid" required="" placeholder="ID" value='2222' disabled>
+        <input type="number" name="empid" required="" placeholder="ID" value="{{ value[0][0] }}" disabled>
       </div>
       <div class="user-box">
-        <input type="text" name="name" required="" placeholder="Name" value='sample name'>
+        <input type="text" name="name" required="" placeholder="Name" value='{{ value[0][1] }}'>
       </div>
       <div class="user-box">
-        <textarea placeholder="Address" rows="1" name = "address" > Nashik </textarea>
+        <textarea placeholder="Address" rows="1" name = "address" >{{ value[0][2] }}</textarea>
       </div>
       <div class="user-box">
-        <input placeholder="DOB" type="text" onfocus="(this.type='date')" id="date" name = "dob" value='22/12/98'>
+        <input placeholder="DOB" type="text" onfocus="(this.type='date')" id="date" name = "dob" value='{{ value[0][3] }}'>
 
       </div>
       <div class="user-box">
-        <input type="number" name="mobile" required="" placeholder="Mobile No." value='8888000000' >
+        <input type="number" name="mobile" required="" placeholder="Mobile No." value='{{ value[0][4] }}' >
       </div>
       <input type=submit class='button' value='update'>
     </form>
